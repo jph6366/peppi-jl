@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["Error"],"fn":["format_hash"],"mod":["peppi","slippi"],"type":["Result"]};

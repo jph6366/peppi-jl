@@ -1,1 +1,0 @@
-searchState.loadedDescShard("julia_app", 0, "Wrapper around peppi’s Game structure\nReturns the number of frames in the game\nReturns the argument unchanged.\nCreates a new SlippiGame from a file path\nCalls <code>U::from(self)</code>.\nReturns the last frame number")

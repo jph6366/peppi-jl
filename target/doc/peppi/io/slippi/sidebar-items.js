@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"constant":["FILE_SIGNATURE","MAX_SUPPORTED_VERSION"],"mod":["de","ser"],"struct":["Slippi","Version"]};

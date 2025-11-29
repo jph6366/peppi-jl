@@ -1,7 +1,7 @@
-/home/jphardee/Desktop/MELEE/peppi-jl/julia/jlrs-tutorial/julia_app/target/debug/deps/libpkg_config-af41efb422e8f9de.rmeta: /home/jphardee/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pkg-config-0.3.32/src/lib.rs
+/home/jphardee/Desktop/MELEE/peppi-jlrs/target/debug/deps/libpkg_config-af41efb422e8f9de.rmeta: /home/jphardee/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pkg-config-0.3.32/src/lib.rs
 
-/home/jphardee/Desktop/MELEE/peppi-jl/julia/jlrs-tutorial/julia_app/target/debug/deps/libpkg_config-af41efb422e8f9de.rlib: /home/jphardee/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pkg-config-0.3.32/src/lib.rs
+/home/jphardee/Desktop/MELEE/peppi-jlrs/target/debug/deps/libpkg_config-af41efb422e8f9de.rlib: /home/jphardee/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pkg-config-0.3.32/src/lib.rs
 
-/home/jphardee/Desktop/MELEE/peppi-jl/julia/jlrs-tutorial/julia_app/target/debug/deps/pkg_config-af41efb422e8f9de.d: /home/jphardee/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pkg-config-0.3.32/src/lib.rs
+/home/jphardee/Desktop/MELEE/peppi-jlrs/target/debug/deps/pkg_config-af41efb422e8f9de.d: /home/jphardee/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pkg-config-0.3.32/src/lib.rs
 
 /home/jphardee/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pkg-config-0.3.32/src/lib.rs:

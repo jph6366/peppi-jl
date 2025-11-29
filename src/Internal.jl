@@ -1,9 +1,9 @@
-module JuliaApp
+module PeppiJlrs
 using JlrsCore.Wrap
 # import peppi_jlrs_jll: libpeppi_jlrs_path
 
 # @wrapmodule(libpeppi_jlrs_path, :peppi_jlrs_init)
-@wrapmodule(joinpath(@__DIR__, "../target/debug/libjulia_app"), :julia_module_tutorial_init_fn)
+@wrapmodule(joinpath(@__DIR__, "../target/debug/libpeppi_jlrs"), :peppi_jlrs_init)
 
 function __init__()
     @initjlrs

@@ -1,3 +1,0 @@
-var srcIndex = new Map(JSON.parse('[["julia_app",["",[],["lib.rs"]]],["peppi",["",[["frame",[["immutable",[],["mod.rs","peppi.rs","slippi.rs"]]],["mod.rs","mutable.rs","transpose.rs"]],["game",[],["immutable.rs","mod.rs","mutable.rs","shift_jis.rs"]],["io",[["peppi",[],["de.rs","mod.rs","ser.rs"]],["slippi",[],["de.rs","mod.rs","ser.rs"]],["ubjson",[],["de.rs","mod.rs","ser.rs"]]],["mod.rs"]]],["lib.rs"]]]]'));
-createSrcSidebar();
-//{"start":36,"fragment_lengths":[32,341]}

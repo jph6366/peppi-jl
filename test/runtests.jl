@@ -2,11 +2,11 @@ using Test
 
 # Load the Peppi module
 include(joinpath(@__DIR__, "..", "src", "Peppi.jl"))
-using .Peppi
+using .Peppi: read_slippi, read_peppi, P1, P2, HUMAN, CPU, RESOLVED
 
 function test_basic_game()
     game_path = joinpath(@__DIR__, "data", "game.slp")
-    game = Peppi.read_slippi(game_path)
+    game = read_slippi(game_path)
 
     # Test metadata
     @test !isempty(game.metadata)
