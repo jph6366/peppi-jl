@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["ICE_CLIMBERS","MAX_PLAYERS","NUM_PORTS"],"enum":["DashBack","EndMethod","Language","PlayerType","Port","ShieldDrop"],"fn":["port_occupancy"],"mod":["immutable","mutable","shift_jis"],"struct":["Bytes","End","GeckoCodes","Match","Netplay","Player","PlayerEnd","Quirks","Scene","Start","Team","Ucf"],"trait":["Game"]};

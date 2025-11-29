@@ -1,0 +1,4 @@
+cargo::rustc-check-cfg=cfg(julia_1_10,julia_1_11,julia_1_12,julia_1_13)
+cargo::metadata=version=1.10.10
+cargo::metadata=is_dev=0
+cargo::rustc-cfg=julia_1_10

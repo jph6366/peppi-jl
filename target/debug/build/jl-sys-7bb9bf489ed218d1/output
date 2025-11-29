@@ -1,0 +1,13 @@
+cargo::rerun-if-env-changed=PATH
+cargo::rerun-if-env-changed=LD_LIBRARY_PATH
+cargo::rerun-if-env-changed=DYLD_LIBRARY_PATH
+cargo::rerun-if-env-changed=JLRS_JULIA_DIR
+cargo::rustc-check-cfg=cfg(julia_1_10,julia_1_11,julia_1_12,julia_1_13)
+cargo::metadata=julia_dir=/home/jphardee/.julia/juliaup/julia-1.10.10+0.x64.linux.gnu
+cargo::metadata=debug=0
+cargo::metadata=windows=0
+cargo::metadata=version=1.10.10
+cargo::metadata=is_dev=0
+cargo::rustc-cfg=julia_1_10
+cargo::rustc-link-search=/home/jphardee/.julia/juliaup/julia-1.10.10+0.x64.linux.gnu/lib
+cargo::rustc-link-lib=julia

@@ -1,0 +1,1 @@
+jlrs::data::managed::Weak<'_, 'static, TypedValue<'_, 'static, StructArray>>

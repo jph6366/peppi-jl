@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["CURRENT_VERSION","FILE_SIGNATURE","MIN_VERSION"],"enum":["Compression"],"mod":["de","ser"],"struct":["Peppi","Version"]};

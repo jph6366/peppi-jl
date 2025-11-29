@@ -1,0 +1,15 @@
+name = "Peppi"
+uuid = "08454e61-ed6c-45b8-b686-34d1854fe0e1"
+authors = ["Jackson Potter Hardee <jphardee@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+Arrow = "69666777-d1a9-59fb-9406-91d4454c9d45"
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+JlrsCore = "29be08bc-e5fd-4da2-bbc1-72011c6ea2c9"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

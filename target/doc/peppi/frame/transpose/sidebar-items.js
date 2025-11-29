@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["Data","DreamlandWhispy","End","FodPlatform","Frame","Item","ItemMisc","PortData","Position","Post","Pre","StadiumTransformation","Start","StateFlags","TriggersPhysical","Velocities","Velocity"]};

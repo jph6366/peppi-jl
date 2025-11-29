@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["julia_app_init_fn"],"struct":["SlippiGame"]};

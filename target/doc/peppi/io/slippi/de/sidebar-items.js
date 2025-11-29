@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Event"],"fn":["parse_event","parse_header","parse_metadata","parse_start","player_end","read"],"struct":["Debug","Opts","ParseState","PartialGame"]};
