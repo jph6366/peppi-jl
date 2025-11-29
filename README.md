@@ -2,8 +2,12 @@
 
 Julia bindings for the [peppi](https://github.com/hohav/peppi) Slippi replay parser, built using Apache Arrow and [jlrs](https://github.com/Taaitaaiger/jlrs).
 
+@TODO: Remove Rust Crate Build once PR is merged for peppi_jlrs_jll
+
 @TODO: Add read_peppi
+
 @TODO: Update for peppi_jlrs_jll once published and PR merged in Yggdrasil
+
 @TODO: Use Serde.jl instead JSON.jl
 
 ## Installation
