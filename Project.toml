@@ -7,6 +7,7 @@ version = "0.1.0"
 Arrow = "69666777-d1a9-59fb-9406-91d4454c9d45"
 JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
 JlrsCore = "29be08bc-e5fd-4da2-bbc1-72011c6ea2c9"
+peppi_jlrs_jll = "42265baf-9f38-5b3a-a647-0201f872c1d9"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
