@@ -2,8 +2,9 @@
 
 Julia bindings for the [peppi](https://github.com/hohav/peppi) Slippi replay parser, built using Apache Arrow and [jlrs](https://github.com/Taaitaaiger/jlrs).
 
-
-@TODO: Use Serde.jl instead JSON.jl
+@TODO Publish Yggdrasil Peppi.jl Pkg
+@TODO Use Serde.jl instead JSON.jl (Benchmark Comparison)
+@TODO DuckDB rewrite over Arrow (document tradeoffs and technical debt)
 
 ## Installation
 
