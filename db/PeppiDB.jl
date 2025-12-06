@@ -1,6 +1,7 @@
 using Distributed
 using JSON
 using Pickle
+using Serialization
 using ProgressBars
 using SHA
 using MD5
@@ -16,6 +17,8 @@ include("state.jl")
 include("traverse.jl")
 include("utils.jl")
 include("extract.jl")
+include("nametags.jl")
+include("meta.jl")
 
 using .Peppi: read_slippi, read_peppi, P1, P2, HUMAN, CPU, RESOLVED, Game
 
@@ -70,7 +73,6 @@ function processreplays(
 )
     """Process identified replay files"""
     rawfiles = String[]
-    rawnames = Vector{String}[]
     for raw in toprocess
         rawpat = joinpath(rawdir, raw)
         if !endswith(raw, ".zip")
@@ -78,16 +80,9 @@ function processreplays(
         end
         slpfiles = traverseslpfiles(rawpat)
         push!(rawfiles, raw)
-        push!(rawnames, fill(raw, length(slpfiles)))
     end
 
     results = extractslpzipfiles(rawdir, rawfiles, outdir, tmpdir, nthreads, compressopts)
-
-    @assert length(results) == length(rawfiles)
-
-    for (result, rawname) in zip(results, rawnames)
-        result["raw"] = rawname
-    end
 
     for rawname in toprocess
         rawbyname[rawname]["processed"] = true
@@ -97,15 +92,16 @@ function processreplays(
         write(file, JSON.json(collect(values(rawbyname)), 2))
     end
 
-    slpdbpath = joinpath(root, "parsed.pkl")
-    slpmeta = isfile(slpdbpath) ? Pickle.load(open(slpdbpath, "r")) : []
+    # @TODO add Pickle support
+    slpdbpath = joinpath(root, "parsed.json")
+    slpmeta = isfile(slpdbpath) ? JSON.parsefile(slpdbpath) : []
     bykey = Dict(getmd5key(row) => row for row in slpmeta)
     for result in results
         bykey[getmd5key(result)] = result
     end
 
-    open(joinpath(root, "parsed.pkl"), "w") do file
-        Pickle.dump(file, collect(values(bykey)))
+    open(joinpath(root, "parsed.json"), "w") do file
+        write(file, JSON.json(collect(values(bykey)), 2))
     end
 end
 
@@ -123,4 +119,6 @@ function preprocessreplays(
     processreplays(root, tmpdir, rawdir, rawpath, outdir, toprocess, rawbyname, nthreads, compressopts)
 end
 
-preprocessreplays("/media/jphardee/T9/Sample3/")
+preprocessreplays("/media/jphardee/T9/Sample3/", 4, true)
+
+processdataset("/media/jphardee/T9/Sample3/")

@@ -1,10 +1,16 @@
 # peppi-jl
 
-Julia bindings for the [peppi](https://github.com/hohav/peppi) Slippi replay parser, built using Apache Arrow and [jlrs](https://github.com/Taaitaaiger/jlrs).
+
+WARNING: This is an early prototype. The API and features may change significantly in future releases.
+
+Julia bindings for the [peppi](https://github.com/hohav/peppi) Slippi replay parser, built using Apache Arrow and [jlrs](https://github.com/Taaitaaiger/jlrs)
 
 @TODO Publish Yggdrasil Peppi.jl Pkg
+
 @TODO Use Serde.jl instead JSON.jl (Benchmark Comparison)
+
 @TODO DuckDB rewrite over Arrow (document tradeoffs and technical debt)
+
 
 ## Installation
 

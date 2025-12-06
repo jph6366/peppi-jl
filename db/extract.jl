@@ -1,21 +1,23 @@
 
 function extractslpzipfiles(root, rawfiles, outdir, tmpdir, nthreads, compressionopts)
     if isone(nthreads)
-        results = map(ProgressBar(rawfiles)) do rawfile
+        results_nested = map(ProgressBar(rawfiles)) do rawfile
             extractslpzip_(root, rawfile, outdir, tmpdir; compression=compressionopts[:compression], compressionlevel=compressionopts[:compression_level])
         end
-        results
+        # Flatten results from nested arrays
+        results = vcat(results_nested...)
     else
-        results =  Vector{Any}(undef, length(rawfiles))
+        results_nested = Vector{Any}(undef, length(rawfiles))
         @sync begin
             for (i, rawfile) in enumerate(rawfiles)
                 Threads.@spawn begin
                     idx, res = extractslpzip(i, root, rawfile, outdir, tmpdir;  compression=compressionopts[:compression], compressionlevel=compressionopts[:compression_level])
-                    results[idx] = res
+                    results_nested[idx] = res
                 end
             end
         end
-        results
+        # Flatten results from nested arrays
+        results = vcat(results_nested...)
     end
 end
 
@@ -60,10 +62,9 @@ function extractslpzip_(root, rawfile, outdir, tmpdir; compression, compressionl
     """Extract a zip file and process the .slp files inside"""
     
     rawpat = joinpath(root, rawfile) 
-    result = Dict{String, Any}("name" => chop(rawpat))
     println("[extractslpzip_] Processing $rawpat")
     println("[extractslpzip_] Output directory: $outdir")
-    println("[extractslpzip_] result: $result")
+    
     # Create a temporary directory to extract the zip
     tmp = mktempdir(tmpdir)
     
@@ -74,8 +75,12 @@ function extractslpzip_(root, rawfile, outdir, tmpdir; compression, compressionl
     slpfiles = traverseslpfiles(tmp)
     println("Found $(length(slpfiles)) .slp files in $rawfile")
     
-    # Process each .slp file
+    # Process each .slp file and collect results
+    results = []
+    
     for slpfile in slpfiles
+        result = Dict{String, Any}("name" => chop(rawpat), "raw" => rawfile)
+        
         slpbytes = read(slpfile)
         result["slp_size"] = length(slpbytes)
         slpmd5 = bytes2hex(md5(slpbytes))
@@ -116,13 +121,15 @@ function extractslpzip_(root, rawfile, outdir, tmpdir; compression, compressionl
         else
             println("[extractslpzip_] Game rejected: $reason")
         end
+        
+        push!(results, result)
     end
     
-    # # Clean up temporary directory
+    # Clean up temporary directory
     println("[extractslpzip_] Cleaning up temporary directory: $tmp")
     rm(tmp, recursive=true, force=true)
-    println("[extractslpzip_] Returning result with keys: $(keys(result))")
-    result
+    
+    results
 end
 
 function extractslpzip(idx, root, file, outdir, tmpdir; kwargs...)
