@@ -7,6 +7,8 @@ Julia bindings for the [peppi](https://github.com/hohav/peppi) Slippi replay par
 
 @TODO Publish Yggdrasil Peppi.jl Pkg
 
+@TODO Rename `_end` and `GameEnd` to `stop` and `GameStop`
+
 @TODO Use Serde.jl instead JSON.jl (Benchmark Comparison)
 
 @TODO DuckDB rewrite over Arrow (document tradeoffs and technical debt)
