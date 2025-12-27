@@ -11,7 +11,7 @@ Julia bindings for the [peppi](https://github.com/hohav/peppi) Slippi replay par
 
 @TODO Use Serde.jl instead JSON.jl (Benchmark Comparison)
 
-@TODO DuckDB rewrite over Arrow (document tradeoffs and technical debt)
+@TODO [DuckDB rewrite over Arrow](https://duckdb.org/2025/05/23/arrow-ipc-support-in-duckdb) (document tradeoffs and technical debt)
 
 
 ## Installation
