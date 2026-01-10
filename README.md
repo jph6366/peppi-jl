@@ -1,5 +1,4 @@
-# peppi-jl
-
+# Peppi.jl
 
 WARNING: This is an early prototype. The API and features may change significantly in future releases.
 
