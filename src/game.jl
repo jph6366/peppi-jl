@@ -40,38 +40,32 @@ Base.@kwdef struct Scene
     major::Int
     minor::Int
 end
-Base.repr(x::Scene) = _repr(x)
 
 Base.@kwdef struct Match
     id::String
     game::Int
     tiebreaker::Int
 end
-Base.repr(x::Match) = _repr(x)
 
 Base.@kwdef struct Slippi
     version::Tuple{Int, Int, Int}
 end
-Base.repr(x::Slippi) = _repr(x)
 
 Base.@kwdef struct Netplay
     name::String
     code::String
     suid::Union{String, Nothing} = nothing
 end
-Base.repr(x::Netplay) = _repr(x)
 
 Base.@kwdef struct Team
     color::Int
     shade::Int
 end
-Base.repr(x::Team) = _repr(x)
 
 Base.@kwdef struct Ucf
     dash_back::Union{DashBack, Nothing}
     shield_drop::Union{ShieldDrop, Nothing}
 end
-Base.repr(x::Ucf) = _repr(x)
 
 Base.@kwdef struct Player
     port::Port
@@ -90,7 +84,6 @@ Base.@kwdef struct Player
     name_tag::Union{String, Nothing} = nothing
     netplay::Union{Netplay, Nothing} = nothing
 end
-Base.repr(x::Player) = _repr(x)
 
 Base.@kwdef struct GameStart
     slippi::Slippi
@@ -111,20 +104,17 @@ Base.@kwdef struct GameStart
     language::Union{Language, Nothing} = nothing
     match::Union{Match, Nothing} = nothing
 end
-Base.repr(x::GameStart) = _repr(x)
 
 Base.@kwdef struct PlayerEnd
     port::Port
     placement::Int
 end
-Base.repr(x::PlayerEnd) = _repr(x)
 
 Base.@kwdef struct GameStop
     method::EndMethod
     lras_initiator::Union{Port, Nothing} = nothing
     players::Union{Tuple{Vararg{PlayerEnd}}, Nothing} = nothing
 end
-Base.repr(x::GameStop) = _repr(x)
 
 Base.@kwdef struct Game
     start::GameStart
@@ -132,4 +122,3 @@ Base.@kwdef struct Game
     metadata::Dict
     frames::Union{Frame, Nothing}
 end
-Base.repr(x::Game) = _repr(x)
