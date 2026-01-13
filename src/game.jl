@@ -119,16 +119,16 @@ Base.@kwdef struct PlayerEnd
 end
 Base.repr(x::PlayerEnd) = _repr(x)
 
-Base.@kwdef struct GameEnd
+Base.@kwdef struct GameStop
     method::EndMethod
     lras_initiator::Union{Port, Nothing} = nothing
     players::Union{Tuple{Vararg{PlayerEnd}}, Nothing} = nothing
 end
-Base.repr(x::GameEnd) = _repr(x)
+Base.repr(x::GameStop) = _repr(x)
 
 Base.@kwdef struct Game
     start::GameStart
-    _end::GameEnd
+    stop::GameStop
     metadata::Dict
     frames::Union{Frame, Nothing}
 end
