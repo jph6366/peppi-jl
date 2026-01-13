@@ -4,14 +4,6 @@ WARNING: This is an early prototype. The API and features may change significant
 
 Julia bindings for the [peppi](https://github.com/hohav/peppi) Slippi replay parser, built using Apache Arrow and [jlrs](https://github.com/Taaitaaiger/jlrs)
 
-@TODO Publish Yggdrasil Peppi.jl Pkg
-
-@TODO Rename `_end` and `GameEnd` to `stop` and `GameStop`
-
-@TODO Use Serde.jl instead JSON.jl (Benchmark Comparison)
-
-@TODO [DuckDB rewrite over Arrow](https://duckdb.org/2025/05/23/arrow-ipc-support-in-duckdb) (document tradeoffs and technical debt)
-
 
 ## Installation
 
