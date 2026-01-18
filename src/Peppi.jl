@@ -23,11 +23,11 @@ function read_slippi(path::String; skip_frames::Bool=false)::Game
     g = _read_slippi(path, Int8(skip_frames))
     
     start_json = JSON.parse(get_start(g))
-    end_json = JSON.parse(get_end(g))
+    stop_json = JSON.parse(get_end(g))
     metadata = JSON.parse(get_metadata(g))
     
     game_start = dc_from_json(GameStart, start_json)
-    game_end = isempty(end_json) ? nothing : dc_from_json(GameEnd, end_json)
+    game_stop = isempty(stop_json) ? nothing : dc_from_json(GameStop, stop_json)
     
     # Load frames from Arrow file if not skipping
     local frames
@@ -45,7 +45,7 @@ function read_slippi(path::String; skip_frames::Bool=false)::Game
     
     return Game(
         start=game_start,
-        _end=game_end,
+        stop=game_stop,
         metadata=metadata,
         frames=frames
     )
@@ -71,7 +71,7 @@ function read_peppi(path::String; skip_frames::Bool=false)::Game
     metadata = JSON.parse(get_metadata(g))
     
     game_start = dc_from_json(GameStart, start_json)
-    game_end = isempty(end_json) ? nothing : dc_from_json(GameEnd, end_json)
+    game_end = isempty(end_json) ? nothing : dc_from_json(GameStop, end_json)
     
     # Load frames from Arrow file if not skipping
     local frames
@@ -89,13 +89,13 @@ function read_peppi(path::String; skip_frames::Bool=false)::Game
     
     return Game(
         start=game_start,
-        _end=game_end,
+        stop=game_end,
         metadata=metadata,
         frames=frames
     )
 end
 
-export read_slippi, read_peppi, Game, GameStart, GameEnd, Frame, PortData, Data, Pre, Post
+export read_slippi, read_peppi, Game, GameStart, GameStop, Frame, PortData, Data, Pre, Post
 export Port, P1, P2, P3, P4
 export PlayerType, HUMAN, CPU, DEMO
 export Language, JAPANESE, ENGLISH

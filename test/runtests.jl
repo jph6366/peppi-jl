@@ -70,7 +70,7 @@ function test_basic_game()
     @test p2.ucf.shield_drop === nothing
 
     # Test end data
-    end_data = game._end
+    end_data = game.stop
     @test end_data !== nothing
     @test end_data.method == RESOLVED
     @test end_data.lras_initiator === nothing

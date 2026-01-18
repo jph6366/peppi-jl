@@ -1,7 +1,5 @@
 using Arrow
 
-include("util.jl")
-
 # Type aliases for Arrow arrays
 const Int8Arr = Union{Arrow.Primitive{Int8}, Nothing}
 const Int16Arr = Union{Arrow.Primitive{Int16}, Nothing}
@@ -17,25 +15,21 @@ const Float64Arr = Union{Arrow.Primitive{Float64}, Nothing}
 Base.@kwdef mutable struct End
     latest_finalized_frame::Int32Arr = nothing
 end
-Base.repr(x::End) = _repr(x)
 
 Base.@kwdef struct Position
     x::Float32Arr
     y::Float32Arr
 end
-Base.repr(x::Position) = _repr(x)
 
 Base.@kwdef struct Start
     random_seed::UInt32Arr
     scene_frame_counter::UInt32Arr = nothing
 end
-Base.repr(x::Start) = _repr(x)
 
 Base.@kwdef struct TriggersPhysical
     l::Float32Arr
     r::Float32Arr
 end
-Base.repr(x::TriggersPhysical) = _repr(x)
 
 Base.@kwdef struct Velocities
     self_x_air::Float32Arr
@@ -44,13 +38,11 @@ Base.@kwdef struct Velocities
     knockback_y::Float32Arr
     self_x_ground::Float32Arr
 end
-Base.repr(x::Velocities) = _repr(x)
 
 Base.@kwdef struct Velocity
     x::Float32Arr
     y::Float32Arr
 end
-Base.repr(x::Velocity) = _repr(x)
 
 Base.@kwdef mutable struct Item
     type::UInt16Arr
@@ -64,7 +56,6 @@ Base.@kwdef mutable struct Item
     misc::Union{Tuple{UInt8Arr, UInt8Arr, UInt8Arr, UInt8Arr}, Nothing} = nothing
     owner::Int8Arr = nothing
 end
-Base.repr(x::Item) = _repr(x)
 
 Base.@kwdef mutable struct Post
     character::UInt8Arr
@@ -89,7 +80,6 @@ Base.@kwdef mutable struct Post
     hitlag::Float32Arr = nothing
     animation_index::UInt32Arr = nothing
 end
-Base.repr(x::Post) = _repr(x)
 
 Base.@kwdef mutable struct Pre
     random_seed::UInt32Arr
@@ -106,22 +96,18 @@ Base.@kwdef mutable struct Pre
     percent::Float32Arr = nothing
     raw_analog_y::Int8Arr = nothing
 end
-Base.repr(x::Pre) = _repr(x)
 
 Base.@kwdef struct Data
     pre::Pre
     post::Post
 end
-Base.repr(x::Data) = _repr(x)
 
 Base.@kwdef mutable struct PortData
     leader::Data
     follower::Union{Data, Nothing} = nothing
 end
-Base.repr(x::PortData) = _repr(x)
 
 Base.@kwdef struct Frame
     id::Any
     ports::Tuple{Vararg{PortData}}
 end
-Base.repr(x::Frame) = _repr(x)
