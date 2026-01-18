@@ -19,7 +19,7 @@ const PLAYER_MAINS = Set([
     ("Franz", melee.Character.DOC),
 ])
 
-function name_from_metadata(playermeta, raw=nothing)
+function playernametag(playermeta, raw=nothing)
     """Extract player name from metadata"""
     netplay = get(playermeta, "netplay", nothing)
 
@@ -39,11 +39,11 @@ function name_from_metadata(playermeta, raw=nothing)
     end
 
     if raw !== nothing
-        player_name = getrankedplayer(raw)
-        if player_name !== nothing
+        playername = getrankedplayer(raw)
+        if playername !== nothing
             char = melee.Character(playermeta["character"])
-            if (player_name, char) in PLAYER_MAINS
-                return player_name
+            if (playername, char) in PLAYER_MAINS
+                return playername
             end
         end
     end
@@ -108,7 +108,7 @@ const NAME_GROUPS = [
 ]
 
 # Build NAME_MAP from NAME_GROUPS
-function _buildnamemap()
+function buildnamemap()
     name_map = Dict{String, String}()
     for group in NAME_GROUPS
         first = group[1]
@@ -128,7 +128,7 @@ end
 
 const KNOWN_PLAYERS = Set(group[1] for group in NAME_GROUPS)
 
-function is_known_player(name)
+function isknownplayer(name)
     """Check if player is in known players list"""
     return normalizename(name) in KNOWN_PLAYERS
 end
@@ -138,11 +138,11 @@ function maxnamecode(name_map)
     return isempty(name_map) ? 0 : maximum(values(name_map)) + 1
 end
 
-function nameencoder(name_map)
+function nameencoder(namemap)
     """Return a function that encodes names to integer codes"""
-    missing_name_code = maxnamecode(name_map)
+    missing_name_code = maxnamecode(namemap)
     return function encode_name(name)
-        return get(name_map, normalizename(name), missing_name_code)
+        return get(namemap, normalizename(name), missing_name_code)
     end
 end
 

@@ -36,8 +36,8 @@ function checkreplay(row; winneronly=true)
         # Only train on replays vs good players.
         for player in row["players"]
             # One of the players is always `Phillip AI` who is "known".
-            name = name_from_metadata(player)
-            if !is_known_player(name)
+            name = playername(player)
+            if !isknownplayer(name)
                 return "unknown player vs phillip"
             end
         end
