@@ -1,15 +1,8 @@
-# peppi-jl
-
+# Peppi.jl
 
 WARNING: This is an early prototype. The API and features may change significantly in future releases.
 
 Julia bindings for the [peppi](https://github.com/hohav/peppi) Slippi replay parser, built using Apache Arrow and [jlrs](https://github.com/Taaitaaiger/jlrs)
-
-@TODO Publish Yggdrasil Peppi.jl Pkg
-
-@TODO Use Serde.jl instead JSON.jl (Benchmark Comparison)
-
-@TODO DuckDB rewrite over Arrow (document tradeoffs and technical debt)
 
 
 ## Installation
@@ -68,11 +61,11 @@ game.start.stage
 game.start.players[1].character
 # 9  (Marth)
 
-# Game end info
-game._end
-# GameEnd(method=RESOLVED, lras_initiator=nothing, players=nothing)
+# Game stop info
+game.stop
+# GameStop(method=RESOLVED, lras_initiator=nothing, players=nothing)
 
-game._end.method
+game.stop.method
 # RESOLVED::EndMethod = 3
 
 # Frame data (struct-of-arrays via Arrow)
@@ -106,7 +99,7 @@ Read a Slippi replay file and return a `Game` object.
 ```julia
 struct Game
     start::GameStart      # Game start information
-    _end::GameEnd         # Game end information  
+    stop::GameStop         # Game stop information  
     metadata::Dict        # Replay metadata
     frames::Frame         # Frame data (Arrow arrays)
 end
@@ -121,9 +114,9 @@ Contains game configuration including:
 - `random_seed::Int` - Random seed
 - And more...
 
-#### `GameEnd`
+#### `GameStop`
 ```julia
-struct GameEnd
+struct GameStop
     method::EndMethod                           # How the game ended
     lras_initiator::Union{Port, Nothing}        # Who quit (if applicable)
     players::Union{Tuple{Vararg{PlayerEnd}}, Nothing}
