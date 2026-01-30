@@ -89,7 +89,7 @@ end
 # Parse tuple from Arrow struct array
 function tuple_from_sa(::Type{T}, arr) where T <: Tuple
     type_params = T.parameters
-    return Tuple(field_from_sa(type_params[i], getproperty(arr, Symbol(string(i - 1)))) for i in 1:length(type_params))
+    return Tuple(field_from_sa(type_params[i], arr_field(arr, Symbol(string(i - 1)))) for i in eachindex(type_params))
 end
 
 # Handle Vararg tuples
@@ -159,8 +159,16 @@ end
 # Parse enum from JSON string
 function enum_from_json(::Type{T}, json::AbstractString) where T <: Enum
     enum_name = Symbol(to_upper_snake_case(json))
+    # First, try exact match
     for e in instances(T)
         if Symbol(e) == enum_name
+            return e
+        end
+    end
+    # If no exact match, try suffix match (e.g., "UCF" matches "DASHBACK_UCF")
+    for e in instances(T)
+        e_name_str = String(Symbol(e))
+        if endswith(e_name_str, "_" * String(enum_name)) || endswith(e_name_str, String(enum_name))
             return e
         end
     end
