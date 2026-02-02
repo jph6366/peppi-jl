@@ -70,11 +70,11 @@ function test_basic_game()
     @test p2.ucf.shield_drop === nothing
 
     # Test end data
-    end_data = game._end
-    @test end_data !== nothing
-    @test end_data.method == RESOLVED
-    @test end_data.lras_initiator === nothing
-    @test end_data.players === nothing
+    stop = game.stop
+    @test stop !== nothing
+    @test stop.method == RESOLVED
+    @test stop.lras_initiator === nothing
+    @test stop.players === nothing
 
     # Test frames
     frames = game.frames
@@ -84,14 +84,14 @@ function test_basic_game()
     @test length(frames.ports) == 2
     
     # Access frame 1001 data (via Arrow arrays, 1-indexed)
-    p1_pre = frames.ports[1].leader.pre
-    p2_pre = frames.ports[2].leader.pre
+    p1pre = frames.ports[1].leader.pre
+    p2pre = frames.ports[2].leader.pre
     
     # Test position values at frame 1001
-    @test isapprox(p1_pre.position.x[1001], 56.818748474121094, atol=1e-6)
-    @test isapprox(p1_pre.position.y[1001], -18.6373291015625, atol=1e-6)
-    @test isapprox(p2_pre.position.x[1001], 42.195167541503906, atol=1e-6)
-    @test isapprox(p2_pre.position.y[1001], 9.287015914916992, atol=1e-6)
+    @test isapprox(p1pre.position.x[1001], 56.818748474121094, atol=1e-6)
+    @test isapprox(p1pre.position.y[1001], -18.6373291015625, atol=1e-6)
+    @test isapprox(p2pre.position.x[1001], 42.195167541503906, atol=1e-6)
+    @test isapprox(p2pre.position.y[1001], 9.287015914916992, atol=1e-6)
     
     println("✓ All tests passed for basic_game")
 end
