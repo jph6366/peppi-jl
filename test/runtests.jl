@@ -72,11 +72,11 @@ function test_basic_game()
 
     # Test end data
     stop = game.stop
-    println(stop)
+
     @test stop !== nothing
     @test uppercase(stop.method) == "RESOLVED"
 
-    # TODO add new tests for GameEnd versions 2.0.0 & 3.13.0
+    # TODO add new tests with new game.slp files for GameEnd versions 2.0.0 & 3.13.0
     # @test stop.lras_initiator === nothing
     # @test stop.players === nothing
 
