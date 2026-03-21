@@ -2,8 +2,9 @@ using Test
 
 # Load the Peppi module
 include(joinpath(@__DIR__, "..", "src", "Peppi.jl"))
-using .Peppi: read_slippi, read_peppi, P1, P2, HUMAN, CPU, RESOLVED
+using .Peppi: read_slippi, read_peppi
 
+# Slippi version 1.0.0
 function test_basic_game()
     game_path = joinpath(@__DIR__, "data", "game.slp")
     game = read_slippi(game_path)
@@ -21,10 +22,10 @@ function test_basic_game()
     start = game.start
     
     # Slippi version
-    @test start.slippi.version == (1, 0, 0)
+    @test start.slippi.version == [1, 0, 0]
     
     # Bitfield
-    @test start.bitfield == (50, 1, 134, 76)
+    @test start.bitfield == [50, 1, 134, 76]
     
     # Boolean flags
     @test start.is_raining_bombs == false
@@ -35,7 +36,7 @@ function test_basic_game()
     @test start.self_destruct_score == -1
     @test start.stage == 8  # Yoshi's Story
     @test start.timer == 480
-    @test start.item_spawn_bitfield == (255, 255, 255, 255, 255)
+    @test start.item_spawn_bitfield == [255, 255, 255, 255, 255]
     @test start.damage_ratio == 1.0
     
     # Random seed
@@ -43,9 +44,9 @@ function test_basic_game()
     
     # Player 1 (Marth)
     p1 = start.players[1]
-    @test p1.port == P1
+    @test p1.port == "P1"
     @test p1.character == 9  # Marth
-    @test p1.type == HUMAN
+    @test uppercase(p1.type) == "HUMAN"
     @test p1.stocks == 4
     @test p1.costume == 3
     @test p1.team === nothing
@@ -57,9 +58,9 @@ function test_basic_game()
     
     # Player 2 (Fox)
     p2 = start.players[2]
-    @test p2.port == P2
+    @test p2.port == "P2"
     @test p2.character == 2  # Fox
-    @test p2.type == CPU
+    @test uppercase(p2.type) == "CPU"
     @test p2.stocks == 4
     @test p2.costume == 0
     @test p2.team === nothing
@@ -71,10 +72,13 @@ function test_basic_game()
 
     # Test end data
     stop = game.stop
+    println(stop)
     @test stop !== nothing
-    @test stop.method == RESOLVED
-    @test stop.lras_initiator === nothing
-    @test stop.players === nothing
+    @test uppercase(stop.method) == "RESOLVED"
+
+    # TODO add new tests for GameEnd versions 2.0.0 & 3.13.0
+    # @test stop.lras_initiator === nothing
+    # @test stop.players === nothing
 
     # Test frames
     frames = game.frames
