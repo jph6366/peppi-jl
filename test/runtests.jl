@@ -88,14 +88,14 @@ function test_basic_game()
     @test length(frames.ports) == 2
     
     # Access frame 1001 data (via Arrow arrays, 1-indexed)
-    p1pre = frames.ports[1].leader.pre
-    p2pre = frames.ports[2].leader.pre
-    
+    p1pre = frames.ports[1].pre
+    p2pre = frames.ports[2].pre
+
     # Test position values at frame 1001
-    @test isapprox(p1pre.position.x[1001], 56.818748474121094, atol=1e-6)
-    @test isapprox(p1pre.position.y[1001], -18.6373291015625, atol=1e-6)
-    @test isapprox(p2pre.position.x[1001], 42.195167541503906, atol=1e-6)
-    @test isapprox(p2pre.position.y[1001], 9.287015914916992, atol=1e-6)
+    @test isapprox(p1pre[1001].position.x, 56.818748474121094, atol=1e-6)
+    @test isapprox(p1pre[1001].position.y, -18.6373291015625, atol=1e-6)
+    @test isapprox(p2pre[1001].position.x, 42.195167541503906, atol=1e-6)
+    @test isapprox(p2pre[1001].position.y, 9.287015914916992, atol=1e-6)
     
     println("✓ All tests passed for basic_game")
 end
