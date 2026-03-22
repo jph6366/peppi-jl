@@ -1,7 +1,6 @@
 module Peppi
 
 include("Internal.jl")
-include("parse.jl")
 
 using .PeppiJlrs: read_slippi as _read_slippi, read_peppi as _read_peppi, get_start, get_end, get_metadata, get_frames_arrow_path
 import JSON
