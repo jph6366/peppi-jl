@@ -20,7 +20,7 @@ include("extract.jl")
 include("nametags.jl")
 include("meta.jl")
 
-using .Peppi: read_slippi, read_peppi, P1, P2, HUMAN, CPU, RESOLVED, Game
+using .Peppi: read_slippi, read_peppi
 
 function scanreplays(root, shmlink=false)
     """Scan directory structure and identify files to process"""

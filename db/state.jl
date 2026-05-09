@@ -39,8 +39,8 @@ end
 
 # Returns tuple: (x, y)
 function getstick(stick)
-    xpos = Arrow.getfield(stick, :x)
-    ypos = Arrow.getfield(stick, :y)
+    xpos = getproperty.(stick, :x)
+    ypos = getproperty.(stick, :y)
     
     return (
         _stick2libmelee(collect(xpos)),
@@ -51,41 +51,32 @@ end
 # Returns tuple: (percent, facing, x, y, action, invulnerable, character, jumps_left, shield_strength, on_ground, controller)
 # where controller is (main_stick, c_stick, shoulder, buttons)
 function getplayer(player)
-    leader = Arrow.getfield(player, :leader)
+
+    post = player.post
+    pre  = player.pre
+    percent      = getproperty.(post, :percent) .|> (x -> round(UInt16, x))
+    direction    = getproperty.(post, :direction)
+    facing       = direction .> 0
+    pos = getproperty.(post, :position)
+    x = getproperty.(pos, :x) .|> Float32
+    y = getproperty.(pos, :y) .|> Float32
     
-    post = Arrow.getfield(leader, :post)
-    pre = Arrow.getfield(leader, :pre)
-    position = Arrow.getfield(post, :position)
+    action = getproperty.(post, :state) .|> UInt16
+    invulnerable = getproperty.(post, :hurtbox_state) .!= 0
+    character    = getproperty.(post, :character) .|> UInt8
+    jumps_left   = getproperty.(post, :jumps) .|> UInt8
+    shield_str   = getproperty.(post, :shield) .|> Float32
+    on_ground    = getproperty.(post, :airborne) .== 0 
+    joystick = getproperty.(pre, :joystick)
+    cstick = getproperty.(pre, :cstick)
+    buttons_phys = getproperty.(pre, :buttons_physical)
+    triggers = getproperty.(pre, :triggers)
     
-    post_get(key) = Arrow.getfield(post, Symbol(key))
-    pre_get(key) = Arrow.getfield(pre, Symbol(key))
-    
-    percent = collect(post_get("percent")) .|> (x -> round(UInt16, x))
-    direction = collect(post_get("direction"))
-    facing = direction .> 0
-    x = collect(Arrow.getfield(position, :x)) .|> Float32
-    y = collect(Arrow.getfield(position, :y)) .|> Float32
-    action = collect(post_get("state")) .|> UInt16
-    hurtbox_state = collect(post_get("hurtbox_state")) .|> UInt8
-    invulnerable = hurtbox_state .!= 0
-    character = collect(post_get("character")) .|> UInt8
-    jumps_left = collect(post_get("jumps")) .|> UInt8
-    shield_strength = collect(post_get("shield")) .|> Float32
-    
-    joystick = Arrow.getfield(pre, :joystick)
-    cstick = Arrow.getfield(pre, :cstick)
-    buttons_physical = Arrow.getfield(pre, :buttons_physical)
-    triggers = Arrow.getfield(pre, :triggers)
-    
-    airborne = collect(Arrow.getfield(post, :airborne)) .!= 0
-    on_ground = .!airborne
-    
-    # controller tuple: (main_stick, c_stick, shoulder, buttons)
     controller = (
         getstick(joystick),
         getstick(cstick),
         triggers,
-        getbuttons(buttons_physical),
+        getbuttons(buttons_phys),
     )
     
     return (
@@ -97,7 +88,7 @@ function getplayer(player)
         invulnerable,
         character,
         jumps_left,
-        shield_strength,
+        shield_str,
         on_ground,
         controller,
     )

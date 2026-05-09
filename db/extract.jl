@@ -27,16 +27,16 @@ function extractslpgame(game)
     result["lastFrame"] = string(game.frames.id[end])
     result["slippi_version"] = string(game.start.slippi.version)
     result["match"] = string(game.start.match)
-
+    println("players::",length(game.start.players))
     playermetas = map(game.start.players) do player
-        port = player.port
-        leader = game.frames.ports[Int(port)+1].leader
-        cs = leader.post.character
-        character = Int(mode(cs))
-        percent = leader.post.percent
+        port = Int(last(player.port))
+        postframe = getproperty.(game.frames.ports, :post)[1]
+        cs = getproperty.(postframe, :character) 
+        character = mode(cs)
+        percent = getproperty.(postframe, :percent)
         damage = sum(max.(percent[2:end] .- percent[1:end-1], 0.0))
         Dict((            
-            "port" => Int(port),
+            "port" => port,
             "character" => character,
             "type" => player.type == "Human" ? 0 : 1,
             "name_tag" => player.name_tag,

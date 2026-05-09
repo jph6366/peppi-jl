@@ -6,6 +6,7 @@ using .PeppiJlrs: read_slippi as _read_slippi, read_peppi as _read_peppi, get_st
 import JSON
 using Arrow
 
+
 # Parse frames from Arrow struct array (column-oriented)
 function frames_from_sa(arrow_frames)
 
@@ -106,5 +107,5 @@ function read_peppi(path::String; skip_frames::Bool=false)
     )
 end
 
-export read_slippi, read_peppi
+export read_slippi, read_peppi, parse_payloads
 end

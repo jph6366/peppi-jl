@@ -119,7 +119,7 @@ function buildnamemap()
     return name_map
 end
 
-const NAME_MAP = _buildnamemap()
+const NAME_MAP = buildnamemap()
 
 function normalizename(name)
     """Normalize player name using NAME_MAP"""

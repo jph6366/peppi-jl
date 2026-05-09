@@ -21,9 +21,9 @@ function traversepeppi(game)
     frames = game.frames
     playerlist = game.start.players
     portnames = sort([p.port for p in playerlist])
-    portsdata = Arrow.getfield(frames, :ports)
+    portsdata = Arrow.getfield(frames, :ports) 
     players = Dict(map(enumerate(portnames)) do (i, portname)
-        "p$(i-1)" => getplayer(Arrow.getfield(portsdata, Int(portname)+1))
+        "p$(i-1)" => getplayer(Arrow.getfield(portsdata, parse(Int, last(portname))))
     end)
 
     stage = melee.enums.to_internal_stage(game.start.stage).value

@@ -106,7 +106,7 @@ function processdataset(root; winneronly=true, maketar=nothing)
     end
     
     # Print filtering statistics
-    sortedrseasons = sort(collect(reasons), by=x -> -x[2])
+    sortedreasons = sort(collect(reasons), by=x -> -x[2])
     for (reason, count) in sortedreasons
         percentage = 100 * count / length(rows)
         println("Filtered $(round(percentage; digits=2))% due to \"$reason\"")

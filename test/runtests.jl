@@ -103,3 +103,8 @@ end
 @testset "Peppi Julia Integration Tests" begin
     test_basic_game()
 end
+
+@testset "missing Game End event" begin
+    game_path = joinpath(@__DIR__, "data", "missingevent.slp")
+    game = read_slippi(game_path)
+end

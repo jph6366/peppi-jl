@@ -22,17 +22,13 @@ function getwinner(game)
 
     # Get the last frame index from the Arrow arrays
     num_frames = length(game.frames.id)
-    stock_counts = Dict()
-    
-    for port_idx in 1:length(game.frames.ports)
-        player_data = game.frames.ports[port_idx]
-        stocks = player_data.leader.post.stocks[num_frames]
-        stock_counts[port_idx - 1] = stocks
+    stocks = map(game.frames.ports) do port
+        port.post[num_frames].stocks
     end
 
-    losers = [p for (p, s) in stock_counts if s == 0]
+    losers = [p for (p, s) in enumerate(stocks) if s == 0]
     if !isempty(losers)
-        winners = [p for (p, s) in stock_counts if s > 0]
+        winners = [p for (p, s) in enumerate(stocks) if s > 0]
         if length(winners) == 1
             return Int(winners[1])
         end
