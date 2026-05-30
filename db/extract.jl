@@ -1,24 +1,27 @@
 
+
 function extractslpzipfiles(root, rawfiles, outdir, tmpdir, nthreads, compressionopts)
+    kwargs = (
+        compression = compressionopts[:compression], 
+        compressionlevel = compressionopts[:compression_level]
+    )
     if isone(nthreads)
-        results_nested = map(ProgressBar(rawfiles)) do rawfile
-            extractslpzip_(root, rawfile, outdir, tmpdir; compression=compressionopts[:compression], compressionlevel=compressionopts[:compression_level])
+        nestedresults = map(ProgressBar(rawfiles)) do rawfile
+            extractslpzip_(root, rawfile, outdir, tmpdir; kwargs...)
         end
-        # Flatten results from nested arrays
-        results = vcat(results_nested...)
     else
-        results_nested = Vector{Any}(undef, length(rawfiles))
-        @sync begin
-            for (i, rawfile) in enumerate(rawfiles)
-                Threads.@spawn begin
-                    idx, res = extractslpzip(i, root, rawfile, outdir, tmpdir;  compression=compressionopts[:compression], compressionlevel=compressionopts[:compression_level])
-                    results_nested[idx] = res
-                end
+        # Using @spawn and @sync to spawn tasks in threads
+        # and synchronize them at the end of the block
+        tasks = map(rawfiles) do rawfile
+            @spawn begin
+                _, res = extractslpzip_(root, rawfile, outdir, tmpdir; kwargs...)
+                res
             end
         end
-        # Flatten results from nested arrays
-        results = vcat(results_nested...)
+        nestedresults = @sync fetch.(tasks)
     end
+    # Flatten results from nested arrays
+    vcat(nestedresults...)
 end
 
 function extractslpgame(game)
@@ -55,13 +58,14 @@ function extractslpgame(game)
     result["is_teams"] = game.start.is_teams
     result["winner"] = getwinner(game)
 
-    return result
+    result
 end
 
 function extractslpzip_(root, rawfile, outdir, tmpdir; compression, compressionlevel)
     """Extract a zip file and process the .slp files inside"""
-    
-    rawpat = joinpath(root, rawfile) 
+
+    rawpat = joinpath(root, rawfile)
+
     println("[extractslpzip_] Processing $rawpat")
     println("[extractslpzip_] Output directory: $outdir")
     
@@ -71,14 +75,8 @@ function extractslpzip_(root, rawfile, outdir, tmpdir; compression, compressionl
     # Extract the zip file using 7z
     run(`$(p7zip()) x -o$tmp $rawpat -y`)
     
-    # Find all .slp files in the extracted directory
-    slpfiles = traverseslpfiles(tmp)
-    println("Found $(length(slpfiles)) .slp files in $rawfile")
-    
     # Process each .slp file and collect results
-    results = []
-    
-    for slpfile in slpfiles
+    results = map(traverseslpfiles(tmp)) do slpfile
         result = Dict{String, Any}("name" => chop(rawpat), "raw" => rawfile)
         
         slpbytes = read(slpfile)
@@ -122,7 +120,7 @@ function extractslpzip_(root, rawfile, outdir, tmpdir; compression, compressionl
             println("[extractslpzip_] Game rejected: $reason")
         end
         
-        push!(results, result)
+        result
     end
     
     # Clean up temporary directory

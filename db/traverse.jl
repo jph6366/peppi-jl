@@ -60,13 +60,11 @@ function traversepeppi(game)
         stage_filtered = stagearr
         println("[traversepeppi] No consecutive frame sequence found, using full data")
     end
-    
+
     # Returns tuple: (p0, p1, stage)
-    gamestruct = (
+    (
         p0_filtered,
         p1_filtered,
         stage_filtered,
     )
-
-    return gamestruct
 end

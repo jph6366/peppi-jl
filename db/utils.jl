@@ -37,13 +37,6 @@ function getwinner(game)
     return nothing
 end
 
-function getmd5key(row)
-    if haskey(row, MD5_KEY)
-        return row[MD5_KEY]
-    end
-    return (row["raw"], row["name"])
-end
-
 function convertgame(game, compression, compressionlevel)
     println("[convertgame] Starting conversion")
     println("[convertgame] Game type: $(typeof(game))")

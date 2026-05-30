@@ -19,10 +19,18 @@ function frames_from_sa(arrow_frames)
         # Value is 1 for Nana and 0 otherwise
         # follower = nothing
         leader = getproperty.(port, :leader)
-        (pre = getproperty.(leader, :pre), post = getproperty.(leader, :post))
+        (
+            pre = getproperty.(leader, :pre),
+            post = getproperty.(leader, :post)
+        )
     end
-
-    (id = getproperty.(arrow_frames, :id), ports = ports)
+    (
+        id = getproperty.(arrow_frames, :id),
+        ports = ports,
+        start = getproperty.(arrow_frames, :start),
+        stop = getproperty.(arrow_frames, :end),
+        item = getproperty.(arrow_frames, :item) 
+    )
 end
 
 """
