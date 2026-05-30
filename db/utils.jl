@@ -39,7 +39,6 @@ end
 
 function convertgame(game, compression, compressionlevel)
     println("[convertgame] Starting conversion")
-    println("[convertgame] Game type: $(typeof(game))")
     table = (root=game,)
     println("[convertgame] Table created: $(typeof(table))")
     pqfile = IOBuffer()

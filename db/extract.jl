@@ -20,6 +20,7 @@ function extractslpzipfiles(root, rawfiles, outdir, tmpdir, nthreads, compressio
         end
         nestedresults = @sync fetch.(tasks)
     end
+    println(nestedresults)
     # Flatten results from nested arrays
     vcat(nestedresults...)
 end
@@ -74,10 +75,11 @@ function extractslpzip_(root, rawfile, outdir, tmpdir; compression, compressionl
     
     # Extract the zip file using 7z
     run(`$(p7zip()) x -o$tmp $rawpat -y`)
-    
+    slpfiles = traverseslpfiles(tmp)
+    println("Found $(length(slpfiles)) .slp files in $rawfile")
     # Process each .slp file and collect results
     results = map(traverseslpfiles(tmp)) do slpfile
-        result = Dict{String, Any}("name" => chop(rawpat), "raw" => rawfile)
+        result = Dict{String, Any}("name" => root, "raw" => rawfile)
         
         slpbytes = read(slpfile)
         result["slp_size"] = length(slpbytes)
@@ -101,7 +103,6 @@ function extractslpzip_(root, rawfile, outdir, tmpdir; compression, compressionl
         if istraining
             println("[extractslpzip_] Game is valid training data")
             gamestruct = traversepeppi(game)
-            println("[extractslpzip_] traversepeppi completed, gamearr type: $(typeof(gamestruct))")
             gamebytes = convertgame(gamestruct, compression, compressionlevel)
             println("[extractslpzip_] convertgame completed, gamebytes size: $(length(gamebytes)) bytes")
             result["pq_size"] = length(gamebytes)
@@ -119,7 +120,7 @@ function extractslpzip_(root, rawfile, outdir, tmpdir; compression, compressionl
         else
             println("[extractslpzip_] Game rejected: $reason")
         end
-        
+        println("EXTRACTED SLP IN COMPRESSED PARQUET FILE", result)
         result
     end
     

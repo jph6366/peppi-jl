@@ -29,7 +29,7 @@ function scanreplays(root, shmlink=false)
     # @TODO ADD SHARED MEMORY LINKS FOR OTHER SYSTEMS
     rawfilepath = joinpath(root, "raw.json")
     rawdb = if isfile(rawfilepath)
-        JSON.parse(rawfilepath)
+        JSON.parsefile(rawfilepath)
     else
         Dict()
     end
@@ -81,16 +81,24 @@ function processreplays(
     JSON.json(rawpath, collect(values(rawbyname)); pretty=true)
 
     # @TODO add Pickle support
-
-    JSON.json(
-        joinpath(root, "parsed.json"),
-        collect(
-            values(
-                Dict(md5["slp_md5"] => md5 for md5 in pqfiles)
-            )
-        );
-        pretty=true
-    )
+    parsedpath = joinpath(root, "parsed.json")
+    if isfile(parsedpath)
+        parsedjson = JSON.parsefile(parsedpath)
+        for row in results
+            parsedjson[row["slp_md5"]] = row
+        end
+        JSON.json(parsedpath, collect(values(parsedjson)); pretty=true)
+    else
+        JSON.json(
+            parsedpath,
+            collect(
+                values(
+                    Dict(row["slp_md5"] => row for row in pqfiles)
+                )
+            );
+            pretty=true
+        )
+    end
 end
 
 function preprocessreplays(        
@@ -107,6 +115,6 @@ function preprocessreplays(
     processreplays(root, tmpdir, rawdir, rawpath, outdir, toprocess, rawbyname, nthreads, compressopts)
 end
 
-preprocessreplays("/media/jphardee/82615e34-d3fd-42b4-a7a6-06a31aab319d/Sample3/", 4, true)
+preprocessreplays("/media/jphardee/82615e34-d3fd-42b4-a7a6-06a31aab319d/Sample3/", 1, true)
 
 processdataset("/media/jphardee/82615e34-d3fd-42b4-a7a6-06a31aab319d/Sample3/")

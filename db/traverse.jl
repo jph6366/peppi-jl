@@ -14,7 +14,7 @@ function traverseslpfiles(root)
         end
     end
     
-    return files
+    files
 end
 
 function traversepeppi(game)
