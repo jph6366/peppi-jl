@@ -1,0 +1,36 @@
+@enum MeleeCharacter::UInt8 begin
+    MARIO 
+    FOX
+    CPTFALCON 
+    DK 
+    KIRBY 
+    BOWSER 
+    LINK 
+    SHEIK 
+    NESS 
+    PEACH 
+    POPO 
+    NANA 
+    PIKACHU 
+    SAMUS 
+    YOSHI 
+    JIGGLYPUFF 
+    MEWTWO 
+    LUIGI 
+    MARTH 
+    ZELDA 
+    YLINK 
+    DOC 
+    FALCO 
+    PICHU 
+    GAMEANDWATCH 
+    GANONDORF 
+    ROY 
+    WIREFRAME_MALE 
+    WIREFRAME_FEMALE 
+    GIGA_BOWSER 
+    SANDBAG 
+    UNKNOWN_CHARACTER 
+end
+
+println(MeleeCharacter(0xff))

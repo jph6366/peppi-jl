@@ -1,0 +1,293 @@
+#+title: Training
+
+* Training
+
+** Overview
+
+We read in `.slp` files use metadata and per-frame fields to represent the player in a game of Super Smash Bros: Melee for the Nintendo GameCube. We parse the slippi/peppi specific metadata, game start, and game end events as JSON. We read frame in Arrow format, and in Julia we read it as a Arrow.Table from an Arrow IPC file containg all of the game's frame data.
+
+Frame data events happen in order from frame start -> pre-frame update -> post-frame update
+
+1. Frame Start
+   - added to transfer RNG seed at beginning of frame's processing to prevent desyncs
+     - such as knockback spiral animation desync
+   _0x3A_ uint8
+   _Frame Number_ int32
+   _Random Seed_ uint32
+   _Scene Frame Counter_ uint32
+
+2. Pre-Frame Update
+   - will occur exactly once per frame per character (ice climbers are 2 characters)
+   - contains information required to reconstruct a replay
+   - information is collected right before controller inputs are used to figure out the character's next action
+   _0x37_ uint8
+   _framenumber_ int32
+   _playerindex_ uint8
+   _isfollower_ bool
+   _randomseed_ uint32
+   _actionstateid_ uint16
+   _xposition_ float
+   _yposition_ float
+   _facingdirection_ float
+   _joystickx_ float
+   _joysticky_ float
+   _cstickx_ float
+   _csticky_ float
+   _trigger_ float
+   _processedbuttons_ uint32
+   - bits to see processed buttons pressed
+   _physicalbuttons_ uint32
+   - bit sets to determine physical buttons pressed
+   _physicalltrigger_ float
+   _physicalrtrigger_ float
+   _xanalogforucf_ int8
+   _percent_ float
+   _yanalogforucf_ int8
+   _xcstickforucf_ int8
+   _ycstickforucf_ int8
+
+3. Post-Frame Update
+   - will occur exactly once per frame per character
+   - contains information for making decisions about game states
+     - such as computing stats
+   - information is collected at the end of the Collision detection
+     - which is the last consideration of the game engine
+
+   _0x38_ uint8
+   _framenumber_ int32
+   _playerindex_ uint8
+   _isfollower_ bool
+   _internalcharacterid_ uint8
+   _actionstateid_ uint16
+   _xposition_ float
+   _yposition_ float
+   _facingdirection_ float
+   _percent_ float
+   _shieldsize_ float
+   _lasthittingattackid_ uint8
+   _currentcombocount_ uint8
+   _lasthitby_ uint8
+   _stocksremaining_ uint8
+   _actionstateframecounter_ float
+   _stagebitflags1_ uint8
+   _stagebitflags2_ uint8
+   _stagebitflags3_ uint8
+   _stagebitflags4_ uint8
+   _stagebitflags5_ uint8
+   _hitstunframesremaining_ float
+   _groundairstate_ bool
+   _lastgroundid_ uint16
+   _jumpsremaning_ uint8
+   _lcancelstatus_ uint8
+   _hurtboxcollisionstate_ uint8
+   _selfinducedairxspeed_ float
+   _selfinducedairyspeed_ float
+   _attackbasedspeedx_ float
+   _attackbasedspeedy_ float
+   _selfinducedgroundxspeed_ float
+   _hitlagframesremaining_ float
+   _animationindex_ uint32
+   _instancehitby_ uint16
+   _instanceid_ uint16
+
+
+
+** Defintion
+
+_imitation learning_
+- For a system with transition model with states $x \in X$ and controls $u \in U$
+  - the imitation learning problem is to leverage a...
+    - set of demonstrations     $\Xi = \{ \xi_1, ..., \xi_D\}$
+      - from an expert policy $\pi^*$ to find a policy $\hat\pi^*$
+
+_behavioral cloning_
+- use a set of expert demonstrations $\xi \in \Xi$
+  - to determine a policy $\pi$ that imitates the expert
+    - this is accomplished through supervised learning
+      - where the difference between learned policy and expert demonstration are minimized with respect to some metric
+- concretely, the goal is to solve the optimization problem
+                                $\hat\pi^* = arg_\pi min \sum_{\xi\in\Xi}\sum_{x\in\Xi} L(\pi(x), \pi^*(x))$
+  - where $L$ is the cost function
+  - $\pi^*(x)$ is the expert's action for at the state $x$
+  - $\hat\pi^*$ is the approximated policy 
+
+
+_dataset aggregation_
+- collect new expert data as needed
+  - to address the issue of distributional mismatch
+    - in states seen under the expert policy and the learned policy
+
+_Algorithm: DAgger_
+*Data* $\pi^*$
+*Result* $\hat\pi^*$
+$D \leftarrow 0$
+Initialize $\hat\pi$
+*for* $i=1$ *to* $N$ *do*
+        $\pi_i = \beta_i\pi^* +(1-\beta_1)\hat\pi$
+        Rollout policy $\pi_i$ to sample trajectory $\tau = \{x_0,x_1,...,x_i\}$
+        Query expert to generate dataset $D_i = \{(x_0,\pi^*(x_0)),...,(x_i,\pi^*(x_i))\}$
+        Aggregate datasets $D \leftarrow D \cup D_i$
+        Retrain policy $\hat\pi$ using aggregated dataset $D$
+*return* $\hat\pi$
+
+
+
+** Background
+
+_finite-state machine (FSM)_
+- a systematic way to design synchronous sequenital circuits
+  - given a functional specification
+- a mathematical model of computation
+- an abstract machine that shall be in exactly 1 of finite number of states at any given time
+- a circuit with $k$ registers can be in one of a finite number $(2^k)$ of unique states
+
+- FSM has $M$ inputs, $N$ outputs, and $k$ bits of state
+  - also a clock, and optionally a reset signal
+- FSM consists of two blocks of combinatorial logic and a register that stores the state
+  1. next state logic
+     - FSM advances to next state on each clock edge
+  2. output logic
+
+- FSM are generalized into two classes characterized by functional specifications
+  1. Moore machines
+     - outputs depend only on the current state of the machine
+  2. Mealy machines
+     - outputs depend on both the current state and current inputs
+
+
+        _practice problem_
+
+        - Traffic Light FSM
+          - two traffic sensors $T_A$ and $T_B$
+            - each sensor indicates TRUE if students are present
+            - and FALSE if the street is empty
+          - two traffic lights $L_A$ and $L_B$
+          - clock with a 5 second interval
+            - on each clock tick (rising edge)
+              - the lights may change based on the sensor output
+          - reset button
+            - for physical plant technicians can put the controller in a known initial state upon initial powering up
+
+                *state transition diagram*
+                - indicates all the possible states of the system and the transitions between these states
+                - graphically:
+                  - circles represent states
+                  - arcs represent transitions between states
+                    - single arc leaving a state
+                      - indicates that transition shall always occur regardless of input
+                    - arc label `Reset` pointing from outer space into state $S0$
+                      - indicating the system enters that state upon reset
+                    - multiple arcs leaving a state have labels
+                      - indicating what input triggers each transition
+                    
+                - transitions take place on the rising edge of the clock
+                  - clock controls when transitions occur
+                    
+                  
+                  [[./state_transition_diagram.png]]
+
+                *state transition table*
+                - indicates, for each state and input, what the next state, $S^'$ should be
+                - a truth table specifying next state logic
+                  - defining next state, $S^'$ , as a function of the current state, $S$ , and the inputs
+                 
+                +--------------------------------+--------------------------------+--------------------------------+
+                | Current State $S$              | Inputs $T_A$             $T_B$ | Next State $S^'$               |
+                +--------------------------------+--------------------------------+--------------------------------+
+                |               S0               |         0                  X   |             S1                 |
+                +--------------------------------+--------------------------------+--------------------------------+
+                |               S0               |         1                  X   |             S0                 |
+                +--------------------------------+--------------------------------+--------------------------------+
+                |               S1               |         X                  X   |             S2                 |
+                +--------------------------------+--------------------------------+--------------------------------+
+                |               S2               |         X                  0   |             S3                 |
+                +--------------------------------+--------------------------------+--------------------------------+
+                |               S2               |         X                  1   |             S2                 |
+                +--------------------------------+--------------------------------+--------------------------------+
+                |               S3               |         X                  X   |             S0                 |
+                +--------------------------------+--------------------------------+--------------------------------+
+
+                - Each state and each output is encoded with two bits
+                  - $S_{1:0}, L_{A1:0}$, and $L_{B1:0}$
+
+                - e.g. the Boolean equation for the next state in the sum-of-products form
+
+                  $S^{'}_{1} = \bar{S}_1 S_0 + S_1 \bar{S}_0 \bar{T}_B + S_1 \bar{S}_0 T_B$
+                  
+                  $S^{'}_{0} = \bar{S}_1 \bar{S}_0 \bar{T}_B + S_1 \bar{S}_0 T_B$
+ 
+                +----------------+------------------+     
+                | State          | Encoding $S_1:0$ |
+                +----------------+------------------+
+                | S0             |           00     |
+                +----------------+------------------+
+                | S1             |           01     |
+                +----------------+------------------+
+                | S2             |           10     |
+                +----------------+------------------+
+                | S3             |           11     |
+                +----------------+------------------+
+
+                +----------------+------------------+
+                | Output         | Encoding $L_1:0$ |
+                +----------------+------------------+
+                | green          |            00    |
+                +----------------+------------------+
+                | yellow         |            01    |
+                +----------------+------------------+
+                | red            |            10    |
+                +----------------+------------------+
+
+                - equations can be simplified using Karnaugh maps
+
+                - $T_B$ and $\bar{T}_B$ terms in the $S^{'}_1$ equation are redundant
+                  - thus $S^{'}_1$ reduces to an XOR operation
+
+                $S^{'}_1 = S_1 \bigoplus S_0$
+                
+                  
+                $S^{'}_0 = \bar{S}_1 \bar{S}_0 \bar{T}_A + S_1 \bar{S}_0 \bar{T}_B$
+
+                *output table*
+                - indicating, for each state, what the output should be in that state
+
+                  +----------------+----------------+----------------+----------------+----------------+----------------+
+                  |                                                                                                     |
+                  +        Current State            |                       Outputs                                     +
+                  |      $S_1$     |     $S_0$      |       $L_{A1}$ |    $L_{A0}$    |    $L_{B1}$    |  $L_{B0}$      |
+                  +----------------+----------------+----------------+----------------+----------------+----------------+
+                  |  0             |  0             |  0             |  0             |  1             |  0             |
+                  +----------------+----------------+----------------+----------------+----------------+----------------+
+                  |  0             |  1             |  0             |  1             |  1             |  0             |
+                  +----------------+----------------+----------------+----------------+----------------+----------------+
+                  |  1             |  0             |  1             |  0             |  0             |  0             |
+                  +----------------+----------------+----------------+----------------+----------------+----------------+
+                  |  1             |  1             |  1             |  0             |  0             |  1             |
+                  +----------------+----------------+----------------+----------------+----------------+----------------+
+
+                  Boolean equations:
+                  
+                  $L_{A1} = S_1$
+                  $L_{A0} = \bar{S}_1 S_0$
+                  $L_{B1} = \bar{S}_1$
+                  $L_{B0} = S_1 S_0$
+
+
+
+                [[./moore_fsm.png]]
+                
+
+_One-Hot Encoding_
+- used for indicating state of a state machine
+  
+ *binary encoding vs. one-hot encoding*
+  - each state represented as a binary number
+    - because $K$ binary numbers can be represented by $\log_2 K$ bits
+      - a system with $K$ states only needs $\log_2 K$ bits of state
+  - a separate bit of state is used for each state
+    - only one bit is 'hot' or TRUE at any time
+      - e.g. a one-hot encoded FSM with 3 states
+        - 001, 010, and 100
+  - each bit of state is stored in a flip-flop
+    - requiring more flip-flops than binary encoding
+    - next state and output logic is simpler, so fewer gates required      
