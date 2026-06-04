@@ -1,13 +1,24 @@
 name = "Peppi"
 uuid = "08454e61-ed6c-45b8-b686-34d1854fe0e1"
-authors = ["Jackson Potter Hardee <jphardee@gmail.com>"]
 version = "0.1.0"
+authors = ["Jackson Potter Hardee <jphardee@gmail.com>"]
 
 [deps]
 Arrow = "69666777-d1a9-59fb-9406-91d4454c9d45"
 JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
 JlrsCore = "29be08bc-e5fd-4da2-bbc1-72011c6ea2c9"
+MD5 = "6ac74813-4b46-53a4-afec-0b5dc9d7885c"
+PyCall = "438e738f-606a-5dbb-bf0a-cddfbfd45ab0"
+StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
+p7zip_jll = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
 peppi_jlrs_jll = "42265baf-9f38-5b3a-a647-0201f872c1d9"
+
+[compat]
+Arrow = "2.8.0"
+MD5 = "0.2.3"
+PyCall = "1.96.4"
+StatsBase = "0.34.11"
+p7zip_jll = "17.7.0"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
