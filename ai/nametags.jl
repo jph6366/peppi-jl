@@ -85,7 +85,6 @@ function normalize_nametag(name)
     return get(NAME_MAP, name, name)
 end
 
-
 function maxnamecode(namemap)
     if isnothing(namemap)
         0

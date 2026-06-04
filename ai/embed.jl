@@ -22,7 +22,6 @@ distance(emb::AbstractEmbedding, embedded, target) = error("Not implemented: dis
 distribution(emb::AbstractEmbedding, embedded) = error("Not implemented: distribution(::$(typeof(emb)), ::$(typeof(embedded)))")
 
 
-
 struct BoolEmbedding{On, Off} <: AbstractEmbedding{Bool, Bool}
     on::On
     off::Off
