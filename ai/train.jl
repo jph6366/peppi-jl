@@ -88,7 +88,6 @@ function train(data, meta)
     # ytrain, yval = onehotbatch(trainset, )
 
     
-    
     # for epoch = 1:get_config(lg, "epochs")
     #     for (x, y) in train_loader
     #         x, y = device(x), device(y) # transfer data to device

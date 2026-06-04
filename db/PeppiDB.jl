@@ -1,9 +1,5 @@
 using Distributed
 using JSON
-using Pickle
-using Serialization
-using ProgressBars
-using SHA
 using MD5
 using p7zip_jll: p7zip
 using StatsBase
@@ -115,6 +111,10 @@ function preprocessreplays(
     processreplays(root, tmpdir, rawdir, rawpath, outdir, toprocess, rawbyname, nthreads, compressopts)
 end
 
+<<<<<<< HEAD
 preprocessreplays("/media/jphardee/82615e34-d3fd-42b4-a7a6-06a31aab319d/Sample3/", 1, true)
+=======
+preprocessreplays("/media/jphardee/82615e34-d3fd-42b4-a7a6-06a31aab319d/Sample3/", 16, true)
+>>>>>>> c8102b8c8c72861a36daca05b99b408f375fab43
 
 processdataset("/media/jphardee/82615e34-d3fd-42b4-a7a6-06a31aab319d/Sample3/")

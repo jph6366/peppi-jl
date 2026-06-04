@@ -5,20 +5,14 @@ function extractslpzipfiles(root, rawfiles, outdir, tmpdir, nthreads, compressio
         compression = compressionopts[:compression], 
         compressionlevel = compressionopts[:compression_level]
     )
-    if isone(nthreads)
-        nestedresults = map(ProgressBar(rawfiles)) do rawfile
+    nestedresults = if isone(nthreads)
+        map(rawfiles) do rawfile
             extractslpzip_(root, rawfile, outdir, tmpdir; kwargs...)
         end
     else
         # Using @spawn and @sync to spawn tasks in threads
         # and synchronize them at the end of the block
-        tasks = map(rawfiles) do rawfile
-            @spawn begin
-                _, res = extractslpzip_(root, rawfile, outdir, tmpdir; kwargs...)
-                res
-            end
-        end
-        nestedresults = @sync fetch.(tasks)
+        @sync fetch.([@spawn extractslpzip_(root, rawfile, outdir, tmpdir; kwargs...) for rawfile in rawfiles])
     end
     println(nestedresults)
     # Flatten results from nested arrays
@@ -129,8 +123,4 @@ function extractslpzip_(root, rawfile, outdir, tmpdir; compression, compressionl
     rm(tmp, recursive=true, force=true)
     
     results
-end
-
-function extractslpzip(idx, root, file, outdir, tmpdir; kwargs...)
-    idx, extractslpzip_(root, file, outdir, tmpdir; kwargs...)
 end

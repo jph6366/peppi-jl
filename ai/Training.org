@@ -183,7 +183,6 @@ _finite-state machine (FSM)_
                 - transitions take place on the rising edge of the clock
                   - clock controls when transitions occur
                     
-                  
                   [[./state_transition_diagram.png]]
 
                 *state transition table*
