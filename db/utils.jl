@@ -1,8 +1,7 @@
 
-const MD5_KEY = "slp_md5"
-
 # Constants that need to be defined before validatereplays can be called
 # These should be defined in extract.jl but we import them here for reference
+
 const melee_Character = melee.Character
 const BANNED_CHARACTERS = Set([
     melee_Character.KIRBY,
@@ -93,7 +92,6 @@ function validatereplays(meta)
 
     for player in meta["players"]
         player_type = player["type"]
-        println("PLAYER::", player_type)
         # if player_type != 0
         #     return false, "not human"
         # end

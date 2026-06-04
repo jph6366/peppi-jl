@@ -1,5 +1,4 @@
 
-
 function extractslpzipfiles(root, rawfiles, outdir, tmpdir, nthreads, compressionopts)
     kwargs = (
         compression = compressionopts[:compression], 
@@ -7,12 +6,12 @@ function extractslpzipfiles(root, rawfiles, outdir, tmpdir, nthreads, compressio
     )
     nestedresults = if isone(nthreads)
         map(rawfiles) do rawfile
-            extractslpzip_(root, rawfile, outdir, tmpdir; kwargs...)
+            extractslpzip(root, rawfile, outdir, tmpdir; kwargs...)
         end
     else
         # Using @spawn and @sync to spawn tasks in threads
         # and synchronize them at the end of the block
-        @sync fetch.([@spawn extractslpzip_(root, rawfile, outdir, tmpdir; kwargs...) for rawfile in rawfiles])
+        @sync fetch.([@spawn extractslpzip(root, rawfile, outdir, tmpdir; kwargs...) for rawfile in rawfiles])
     end
     println(nestedresults)
     # Flatten results from nested arrays
@@ -56,7 +55,7 @@ function extractslpgame(game)
     result
 end
 
-function extractslpzip_(root, rawfile, outdir, tmpdir; compression, compressionlevel)
+function extractslpzip(root, rawfile, outdir, tmpdir; compression, compressionlevel)
     """Extract a zip file and process the .slp files inside"""
 
     rawpat = joinpath(root, rawfile)
@@ -114,7 +113,6 @@ function extractslpzip_(root, rawfile, outdir, tmpdir; compression, compressionl
         else
             println("[extractslpzip_] Game rejected: $reason")
         end
-        println("EXTRACTED SLP IN COMPRESSED PARQUET FILE", result)
         result
     end
     

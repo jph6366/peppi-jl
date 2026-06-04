@@ -286,7 +286,7 @@ uuid = "69de0a69-1ddd-5017-9359-2bf0b02dc9f0"
 version = "2.8.3"
 
 [[deps.Peppi]]
-deps = ["Arrow", "JSON", "JlrsCore", "SHA", "Serialization", "peppi_jlrs_jll"]
+deps = ["Arrow", "JSON", "JlrsCore", "MD5", "PyCall", "StatsBase", "p7zip_jll", "peppi_jlrs_jll"]
 path = "."
 uuid = "08454e61-ed6c-45b8-b686-34d1854fe0e1"
 version = "0.1.0"

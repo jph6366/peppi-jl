@@ -25,11 +25,10 @@ function scanreplays(root, shmlink=false)
     # @TODO ADD SHARED MEMORY LINKS FOR OTHER SYSTEMS
     rawfilepath = joinpath(root, "raw.json")
     rawdb = if isfile(rawfilepath)
-        JSON.parsefile(rawfilepath)
+        JSON.parsefile(rawfilepath; jsonlines=true)
     else
         Dict()
     end
-
     foreach(walkdir(joinpath(root, "Raw"))) do (dirpath, _, filenames)
         relpat = relpath(dirpath, joinpath(root, "Raw"))
         for name in filenames
@@ -110,11 +109,3 @@ function preprocessreplays(
     tmpdir, rawdir, rawpath, outdir, toprocess, rawbyname = scanreplays(root, shmlink)
     processreplays(root, tmpdir, rawdir, rawpath, outdir, toprocess, rawbyname, nthreads, compressopts)
 end
-
-<<<<<<< HEAD
-preprocessreplays("/media/jphardee/82615e34-d3fd-42b4-a7a6-06a31aab319d/Sample3/", 1, true)
-=======
-preprocessreplays("/media/jphardee/82615e34-d3fd-42b4-a7a6-06a31aab319d/Sample3/", 16, true)
->>>>>>> c8102b8c8c72861a36daca05b99b408f375fab43
-
-processdataset("/media/jphardee/82615e34-d3fd-42b4-a7a6-06a31aab319d/Sample3/")

@@ -35,6 +35,30 @@ You can do many other things with Arrow arrays, such as converting them to regul
 
 Also see the [Slippi replay spec](https://github.com/project-slippi/slippi-wiki/blob/master/SPEC.md) for detailed information about the available fields and their meanings.
 
+## Benchmarks
+
+_37/42 training replays processed single threaded__
+
+262.522917 seconds 
+(
+    1.55 G allocations: 1.045 TiB, 
+    16.27% gc time, 
+    58 lock conflicts, 
+    19.39% compilation time: <1% of which was recompilation
+)
+
+_36/42 training replays processed given multiple threads (8)__
+
+262.522917 seconds 
+(
+    1.55 G allocations: 1.045 TiB, 
+    16.27% gc time, 
+    58 lock conflicts, 
+    19.39% compilation time: <1% of which was recompilation
+)
+
+
+
 ## Example
 
 ```julia
